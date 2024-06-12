@@ -1,0 +1,14 @@
+# .coveragerc to control coverage.py
+[run]
+command_line = -m unittest discover -v -s ./tests -p test_*.py
+branch = True
+relative_files = True
+omit =
+    */site-packages/*
+    */dist-packages/*
+    tests/*
+
+[report]
+exclude_lines =
+    raise NotImplementedError
+    pragma: no cover
