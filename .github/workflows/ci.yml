@@ -60,7 +60,13 @@ jobs:
         working-directory: terraform
         run: |
           terraform init
+      - name: Load plan
+        env:
+          TFPLAN: ${{needs.infra-plan.outputs.plan}}"
+        run: |
+          echo $TFPLAN
+
       - name: Apply
         working-directory: terraform
         run: |
-          echo "${{needs.infra-plan.outputs.plan}}"
+          ls -la .
