@@ -1,5 +1,8 @@
 # .coveragerc to control coverage.py
 [run]
+command_line = -m unittest -v
+branch = True
+relative_files = True
 omit =
     */site-packages/*
     */dist-packages/*
