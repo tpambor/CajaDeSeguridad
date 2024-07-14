@@ -27,5 +27,6 @@ jobs:
     steps:
       - uses: hashicorp/setup-terraform@v3
       - name: Plan
+        working-directory: terraform
         run: |
           terraform plan
