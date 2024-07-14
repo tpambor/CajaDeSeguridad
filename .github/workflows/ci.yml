@@ -64,7 +64,8 @@ jobs:
         env:
           TFPLAN: ${{needs.infra-plan.outputs.plan}}"
         run: |
-          echo $TFPLAN
+          echo "::add-mask::$TFPLAN"
+          echo $TFPLAN | base64 -d > tf.plan
 
       - name: Apply
         working-directory: terraform
