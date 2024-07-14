@@ -21,3 +21,11 @@ jobs:
           coverage run
           coverage xml
           coverage report
+
+  infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hashicorp/setup-terraform@v3
+      - name: Plan
+        run: |
+          terraform plan
