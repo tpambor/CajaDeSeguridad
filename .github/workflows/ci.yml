@@ -64,6 +64,7 @@ jobs:
         run: |
           echo "::add-mask::${{needs.infra-plan.outputs.plan}}"
           echo ${{needs.infra-plan.outputs.plan}} | base64 --decode > tf.plan
+          echo "::add-mask::${{needs.infra-plan.outputs.plan}}"
 
       - name: Apply
         working-directory: terraform
