@@ -61,11 +61,8 @@ jobs:
         run: |
           terraform init
       - name: Load plan
-        env:
-          TFPLAN: ${{needs.infra-plan.outputs.plan}}"
         run: |
-          echo "::add-mask::$TFPLAN"
-          echo $TFPLAN | base64 -d > tf.plan
+          `echo -n ${{needs.infra-plan.outputs.plan}} | base64 --decode` > tf.plan
 
       - name: Apply
         working-directory: terraform
