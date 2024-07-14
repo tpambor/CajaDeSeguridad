@@ -45,4 +45,4 @@ jobs:
         working-directory: terraform
         run: |
           terraform plan -out tf.plan
-          echo "plan=$(cat tf.plan | base64)" >> "$GITHUB_OUTPUT"          
+          echo "plan=$(cat tf.plan | base64 -w 0)" >> "$GITHUB_OUTPUT"          
