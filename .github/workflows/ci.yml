@@ -21,3 +21,57 @@ jobs:
           coverage run
           coverage xml
           coverage report
+
+  infra-plan:
+    runs-on: ubuntu-latest
+    outputs:
+      plan: ${{ steps.plan.outputs.plan }}
+      status: ${{ steps.plan.outputs.exitcode }}
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Init
+        working-directory: terraform
+        run: |
+          terraform init
+      - name: Validate
+        working-directory: terraform
+        run: |
+          terraform validate
+      - name: Plan
+        id: plan
+        working-directory: terraform
+        run: |
+          terraform plan -detailed-exitcode -out tf.plan
+          openssl aes-256-cbc -salt -md sha256 -pbkdf2 -k ${{ secrets.ACTIONS_OUTPUT_SECRET }} -in tf.plan -out tf.plan.enc
+          echo "plan=$(cat tf.plan.enc | base64 -w 0)" >> "$GITHUB_OUTPUT"
+
+  infra-apply:
+    runs-on: ubuntu-latest
+    needs: infra-plan
+    environment: 'dev'
+    if: (needs.infra-plan.outputs.status == 2) && (github.ref == 'refs/heads/main')
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Init
+        working-directory: terraform
+        run: |
+          terraform init
+      - name: Load plan
+        env:
+          TFPLAN: ${{needs.infra-plan.outputs.plan}}
+        working-directory: terraform
+        run: |
+          echo $TFPLAN | base64 --decode > tf.plan.enc
+          openssl aes-256-cbc -d -md sha256 -pbkdf2 -k ${{ secrets.ACTIONS_OUTPUT_SECRET }} -in tf.plan.enc -out tf.plan
+      - name: Apply
+        working-directory: terraform
+        run: |
+          terraform apply tf.plan
