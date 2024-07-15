@@ -1,6 +1,6 @@
 locals {
   region = var.aws_region
   ecr = {
-    repository_name = "cd-registry"
+    repository_name = "cds-registry"
   }
 }
