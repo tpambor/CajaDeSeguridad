@@ -26,6 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       plan: ${{ steps.plan.outputs.plan }}
+      status: ${{ steps.plan.outputs.status }}
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -44,8 +45,9 @@ jobs:
         id: plan
         working-directory: terraform
         run: |
-          terraform plan -out tf.plan
-          echo "plan=$(cat tf.plan | base64 -w 0)" >> "$GITHUB_OUTPUT"          
+          terraform plan -detailed-exitcode -out tf.plan
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          echo "plan=$(cat tf.plan | base64 -w 0)" >> "$GITHUB_OUTPUT"
 
   infra-apply:
     runs-on: ubuntu-latest
@@ -64,6 +66,7 @@ jobs:
       - name: Load plan
         env:
           TFPLAN: ${{needs.infra-plan.outputs.plan}}
+          TFSTATUS: ${{needs.infra-plan.outputs.status}}
         working-directory: terraform
         run: |
           echo $TFPLAN | base64 --decode > tf.plan
