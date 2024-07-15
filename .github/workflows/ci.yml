@@ -71,8 +71,7 @@ jobs:
         run: |
           echo $TFPLAN | base64 --decode > tf.plan.enc
           openssl aes-256-cbc -d -md sha256 -pbkdf2 -k ${{ secrets.ACTIONS_OUTPUT_SECRET }} -in tf.plan.enc -out tf.plan
-          file tf.plan
       - name: Apply
         working-directory: terraform
         run: |
-          ls -la .
+          terraform apply tf.plan
