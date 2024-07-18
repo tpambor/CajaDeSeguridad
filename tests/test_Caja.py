@@ -14,7 +14,7 @@ class CajaTestCase(unittest.TestCase):
 
     def setUp(self):
         self.session = setup_database()
-        self.logica = LogicaCaja(self.session)
+        self.logica = LogicaCaja(self.session, 1)
 
     def tearDown(self):
         self.session.query(Caja).delete()

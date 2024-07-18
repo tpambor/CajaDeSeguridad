@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     init_db(engine)
 
-    logica = LogicaCaja(session)
+    logica = LogicaCaja(session, 0)
 
     app = App_CajaDeSeguridad(sys.argv, logica)
     sys.exit(app.exec_())

@@ -34,7 +34,7 @@ def gen_secreto(fake: Faker, clave: ClaveFavorita):
 class SecretoTestCase(unittest.TestCase):
     def setUp(self):
         self.session = setup_database()
-        self.logica = LogicaCaja(self.session)
+        self.logica = LogicaCaja(self.session, 1)
         self.fake=Faker(["es-CO"])
         Faker.seed(1000)
 

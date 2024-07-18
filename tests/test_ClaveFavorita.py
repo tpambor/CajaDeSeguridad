@@ -67,7 +67,7 @@ def gen_clave(fake: Faker, mayuscula=True, minuscula=True, numeros=True, especia
 class ClaveFavoritaTestCase(unittest.TestCase):
     def setUp(self):
         self.session = setup_database()
-        self.logica = LogicaCaja(self.session)
+        self.logica = LogicaCaja(self.session, 1)
         self.fake = Faker(["es-CO"])
         Faker.seed(1000)
 
