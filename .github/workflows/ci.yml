@@ -94,6 +94,9 @@ jobs:
         id: ecr
         working-directory: terraform
         run: echo "url=$(terraform output --raw ecr_url)" >> "$GITHUB_OUTPUT"
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
       - name: Build
         run: docker build -t ${{ steps.ecr.outputs.url }}:${{ github.sha }} .
       - name: Push
