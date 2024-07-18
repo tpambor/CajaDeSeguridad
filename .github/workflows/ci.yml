@@ -35,12 +35,10 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - name: Init
         working-directory: terraform
-        run: |
-          terraform init
+        run: terraform init
       - name: Validate
         working-directory: terraform
-        run: |
-          terraform validate
+        run: terraform validate
       - name: Plan
         id: plan
         working-directory: terraform
@@ -62,8 +60,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - name: Init
         working-directory: terraform
-        run: |
-          terraform init
+        run: terraform init
       - name: Load plan
         env:
           TFPLAN: ${{needs.infra-plan.outputs.plan}}
@@ -73,5 +70,33 @@ jobs:
           openssl aes-256-cbc -d -md sha256 -pbkdf2 -k ${{ secrets.ACTIONS_OUTPUT_SECRET }} -in tf.plan.enc -out tf.plan
       - name: Apply
         working-directory: terraform
+        run: terraform apply tf.plan
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [test, infra-plan]
+    if: github.ref == 'refs/heads/main'
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Init
+        working-directory: terraform
+        run: terraform init
+      - name: Get ECR URL
+        id: ecr
+        working-directory: terraform
         run: |
-          terraform apply tf.plan
+          echo "url=$(terraform output --raw ecr_url)" >> "$GITHUB_OUTPUT"
+          echo "region=$(terraform output --raw aws_region)" >> "$GITHUB_OUTPUT"
+      - name: Login to Amazon ECR
+        id: login-ecr
+        env:
+          AWS_REGION: ${{ steps.ecr.outputs.region }}
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Build
+        run: docker build -t ${{ steps.ecr.outputs.url }}:${{ github.sha }} .
+      - name: Push
+        run: docker push ${{ steps.ecr.outputs.url }}:${{ github.sha }}
