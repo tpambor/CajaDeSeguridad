@@ -7,14 +7,12 @@ import os
 from datetime import datetime, timedelta
 from faker import Faker
 
-# Usa base de datos en memoria para las pruebas
-os.environ['CAJA_DB'] = 'sqlite://' # noqa
+from .db import setup_database
 
-from src.modelo.declarative_base import Session
 from src.modelo import Elemento, Tarjeta, ClaveFavorita
 from src.logica.LogicaCaja import LogicaCaja
 from src.logica.typing import TipoElemento
-from test_ClaveFavorita import gen_clave
+from .test_ClaveFavorita import gen_clave
 
 def gen_tarjeta(fake: Faker, clave: ClaveFavorita, vencimiento=None):
     name = fake.unique.name()
@@ -47,8 +45,8 @@ def gen_tarjeta(fake: Faker, clave: ClaveFavorita, vencimiento=None):
 
 class TarjetaTestCase(unittest.TestCase):
     def setUp(self):
-        self.logica = LogicaCaja()
-        self.session = Session()
+        self.session = setup_database()
+        self.logica = LogicaCaja(self.session, 1)
         self.fake = Faker(["es-CO"])
         Faker.seed(1000)
 

@@ -8,10 +8,8 @@ import re
 from faker import Faker
 from typing import Tuple
 
-# Usa base de datos en memoria para las pruebas
-os.environ['CAJA_DB'] = 'sqlite://'  # noqa
+from .db import setup_database
 
-from src.modelo.declarative_base import Session
 from src.modelo import ClaveFavorita
 from src.logica.LogicaCaja import LogicaCaja
 from src.logica.typing import TipoClaveFavorita
@@ -68,8 +66,8 @@ def gen_clave(fake: Faker, mayuscula=True, minuscula=True, numeros=True, especia
 
 class ClaveFavoritaTestCase(unittest.TestCase):
     def setUp(self):
-        self.logica = LogicaCaja()
-        self.session = Session()
+        self.session = setup_database()
+        self.logica = LogicaCaja(self.session, 1)
         self.fake = Faker(["es-CO"])
         Faker.seed(1000)
 
@@ -293,7 +291,7 @@ class ClaveFavoritaTestCase(unittest.TestCase):
         self.session.add(self.test_data[0][0])
         self.session.commit()
 
-        from test_Login import gen_login
+        from .test_Login import gen_login
         (login, _) = gen_login(self.fake, self.test_data[0][0])
         self.session.add(login)
         self.session.commit()

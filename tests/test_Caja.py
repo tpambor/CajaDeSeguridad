@@ -5,18 +5,16 @@
 import unittest
 import os
 
-# Usa base de datos en memoria para las pruebas
-os.environ['CAJA_DB'] = 'sqlite://'  # noqa
+from .db import setup_database
 
-from src.modelo.declarative_base import Session
 from src.modelo import Caja
 from src.logica.LogicaCaja import LogicaCaja
 
 class CajaTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.logica = LogicaCaja()
-        self.session = Session()
+        self.session = setup_database()
+        self.logica = LogicaCaja(self.session, 1)
 
     def tearDown(self):
         self.session.query(Caja).delete()
