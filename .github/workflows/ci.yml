@@ -35,12 +35,10 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - name: Init
         working-directory: terraform
-        run: |
-          terraform init
+        run: terraform init
       - name: Validate
         working-directory: terraform
-        run: |
-          terraform validate
+        run: terraform validate
       - name: Plan
         id: plan
         working-directory: terraform
@@ -62,8 +60,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - name: Init
         working-directory: terraform
-        run: |
-          terraform init
+        run: terraform init
       - name: Load plan
         env:
           TFPLAN: ${{needs.infra-plan.outputs.plan}}
@@ -73,12 +70,11 @@ jobs:
           openssl aes-256-cbc -d -md sha256 -pbkdf2 -k ${{ secrets.ACTIONS_OUTPUT_SECRET }} -in tf.plan.enc -out tf.plan
       - name: Apply
         working-directory: terraform
-        run: |
-          terraform apply tf.plan
+        run: terraform apply tf.plan
 
   docker:
     runs-on: ubuntu-latest
-    needs: infra-plan
+    needs: [test, infra-plan]
     #if: github.ref == 'refs/heads/main'
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -88,8 +84,7 @@ jobs:
       - uses: hashicorp/setup-terraform@v3
       - name: Init
         working-directory: terraform
-        run: |
-          terraform init
+        run: terraform init
       - name: Get ECR URL
         id: ecr
         working-directory: terraform
