@@ -7,24 +7,22 @@ import os
 from datetime import datetime, timedelta
 from faker import Faker
 
-# Usa base de datos en memoria para las pruebas
-os.environ['CAJA_DB'] = 'sqlite://' # noqa
+from .db import setup_database
 
-from src.modelo.declarative_base import Session
 from src.modelo import Elemento, ClaveFavorita
 from src.logica.LogicaCaja import LogicaCaja
 from src.logica.typing import TipoReporte
 
-from test_ClaveFavorita import gen_clave
-from test_Login import gen_login
-from test_Identificacion import gen_id
-from test_Tarjeta import gen_tarjeta
-from test_Secreto import gen_secreto
+from .test_ClaveFavorita import gen_clave
+from .test_Login import gen_login
+from .test_Identificacion import gen_id
+from .test_Tarjeta import gen_tarjeta
+from .test_Secreto import gen_secreto
 
 class ReporteTestCase(unittest.TestCase):
     def setUp(self):
-        self.logica = LogicaCaja()
-        self.session = Session()
+        self.session = setup_database()
+        self.logica = LogicaCaja(self.session)
         self.fake = Faker(["es-CO"])
         Faker.seed(1000)
 

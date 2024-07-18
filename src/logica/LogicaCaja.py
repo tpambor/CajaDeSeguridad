@@ -6,16 +6,14 @@ from typing import List
 from .typing import TipoClaveFavorita, TipoElemento, TipoReporte
 from src.logica.FachadaCajaDeSeguridad import FachadaCajaDeSeguridad
 
-from src.modelo.declarative_base import engine, Base, Session
 from src.modelo import Caja, ClaveFavorita, Elemento, Tarjeta, Identificacion, Login, Secreto
 
 class LogicaCaja(FachadaCajaDeSeguridad):
 
-    def __init__(self)->None:
+    def __init__(self, session)->None:
         super().__init__()
 
-        Base.metadata.create_all(engine)
-        self.session=Session()
+        self.session = session
 
         # Si no existe ninguna caja en la base de datos, crea una nueva caja
         caja = self.session.query(Caja).first()

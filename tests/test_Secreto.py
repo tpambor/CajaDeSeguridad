@@ -6,14 +6,12 @@ import unittest
 import os
 from faker import Faker
 
-# Usa base de datos en memoria para las pruebas
-os.environ['CAJA_DB'] = 'sqlite://' # noqa
+from .db import setup_database
 
-from src.modelo.declarative_base import Session
 from src.modelo import Elemento, Secreto, ClaveFavorita
 from src.logica.LogicaCaja import LogicaCaja
 from src.logica.typing import TipoElemento
-from test_ClaveFavorita import gen_clave
+from .test_ClaveFavorita import gen_clave
 
 def gen_secreto(fake: Faker, clave: ClaveFavorita):
     secreto = Secreto()
@@ -35,8 +33,8 @@ def gen_secreto(fake: Faker, clave: ClaveFavorita):
 
 class SecretoTestCase(unittest.TestCase):
     def setUp(self):
-        self.logica = LogicaCaja()
-        self.session = Session()
+        self.session = setup_database()
+        self.logica = LogicaCaja(self.session)
         self.fake=Faker(["es-CO"])
         Faker.seed(1000)
 
