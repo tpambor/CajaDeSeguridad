@@ -95,6 +95,6 @@ jobs:
         working-directory: terraform
         run: echo "url=$(terraform output --raw ecr_url)" >> "$GITHUB_OUTPUT"
       - name: Build
-        run: docker build -t ${{ steps.ecr.outputs.url }}:${{ github.sha }}
+        run: docker build -t ${{ steps.ecr.outputs.url }}:${{ github.sha }} .
       - name: Push
         run: docker push ${{ steps.ecr.outputs.url }}:${{ github.sha }}
