@@ -1,13 +1,27 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './navbar/navbar.component';
+import { NgIf } from '@angular/common';
+import { ToastModule } from './toast/toast.module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    NavbarComponent,
+    NgIf,
+    ToastModule
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'cajadeseguridad';
+  constructor(private router: Router) {}
+
+  title = 'Caja de seguridad';
+
+  hasNavbar() {
+    return (this.router.url !== '/') && (this.router.url !== '/register') && (this.router.url !== '/recover');
+  }
 }
