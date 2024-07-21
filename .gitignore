@@ -51,3 +51,13 @@ MANIFEST
 
 instance/
 aplicacion.sqlite
+
+# Node
+/front/node_modules
+
+# Miscellaneous
+/front/.angular/cache
+/front/connect.lock
+/front/coverage
+/front/libpeerconnection.log
+/front/typings
