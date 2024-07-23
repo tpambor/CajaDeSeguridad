@@ -15,7 +15,7 @@ class VistaSecrets(MethodView):
 
     @jwt_required()
     def get(self):
-        logica = LogicaCaja(db.session, get_jwt_identity())
+        logica = LogicaCaja(db.session, int(get_jwt_identity()))
 
         elements = logica.dar_elementos()
 
