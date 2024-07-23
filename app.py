@@ -1,5 +1,6 @@
 import os
 from flask import Flask
+from flask_jwt_extended import JWTManager
 from src.blueprints import BlueprintHealth, BlueprintSecret
 from db import db
 from src.modelo.declarative_base import init_db
@@ -10,6 +11,9 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///app.sqlite')
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['PROPAGATE_EXCEPTIONS'] = True
+    app.config["JWT_SECRET_KEY"] = os.environ['JWT_SECRET_KEY']
+
+    JWTManager(app)
 
     db.init_app(app)
 

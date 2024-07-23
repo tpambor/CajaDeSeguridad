@@ -1,19 +1,21 @@
 import json
 from flask import Blueprint, Response
 from flask.views import MethodView
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from db import db
 from src.logica.LogicaCaja import LogicaCaja
-from .util import class_route, get_token
+from .util import class_route
 
-blp = Blueprint("Secrets", __name__)
+blp = Blueprint("Secretos", __name__)
 
 
-@class_route(blp, "/secrets")
+@class_route(blp, "/secretos")
 class VistaSecrets(MethodView):
     init_every_request = False
 
+    @jwt_required()
     def get(self):
-        logica = LogicaCaja(db.session, 0)
+        logica = LogicaCaja(db.session, get_jwt_identity())
 
         elements = logica.dar_elementos()
 
@@ -52,7 +54,7 @@ class VistaSecrets(MethodView):
                 }
 
             if ele['tipo'] == 'Login':
-                secret['identificacion'] = {
+                secret['login'] = {
                     'clave': ele['clave'],
                     'email': ele['email'],
                     'usuario': ele['usuario'],
