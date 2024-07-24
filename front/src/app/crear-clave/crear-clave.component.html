@@ -1,0 +1,33 @@
+<div class="row pb-5">
+  <div class="col d-flex justify-content-center">
+      <h1 class="text_color">Crear Clave</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col d-flex justify-content-center">
+    <form (ngSubmit)="onSubmit()" #claveForm="ngForm">
+        <div class="mb-3">
+          <label for="nombreClave" class="form-label">Nombre clave</label>
+          <input type="text" class="form-control margin-inline" name="nombreClave" required [(ngModel)]="nombreClave" placeholder="Ingresa el nombre de la clave"  [ngClass]="{'is-invalid': claveForm.submitted && !nombreClave}"/>
+      </div>
+      <div class="mb-3">
+      <label for="claveInput" class="form-label">Clave</label>
+      <button type="button" class="btn btn-secondary" (click)="generateRandomPassword()" id="generarClave">Generar Clave</button>
+      <input type="password" class="form-control margin-inline" name="claveInput" required [(ngModel)]="claveInput" placeholder="Ingresa la clave" [ngClass]="{'is-invalid': claveForm.submitted && !claveInput}" />
+    </div>
+    <div class="mb-3">
+      <label for="confirmarclave" class="form-label">Confirmar Clave</label>
+      <input type="password" class="form-control margin-inline" name="confirmarclave" required [(ngModel)]="confirmarClave" placeholder="Confirma la clave" [ngClass]="{'is-invalid': claveForm.submitted && !confirmarClave}" />
+    </div>
+    <div class="mb-3">
+      <label for="pista" class="form-label">Pista</label>
+      <textarea type="text" class="form-control margin-inline" name="pista" required [(ngModel)]="pista" placeholder="Ingresa una pista para recordar la clave" [ngClass]="{'is-invalid': claveForm.submitted && !pista}"></textarea>
+    </div>
+    <div class="alignCenter d-flex justify-content-between">
+      <button type="submit" routerLink="/elements" class="btn btn-cancel">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Crear</button>
+    </div>
+    </form>
+  </div>
+</div>
