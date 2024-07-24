@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgIf } from '@angular/common';
 import { ToastModule } from './toast/toast.module';
@@ -11,7 +11,8 @@ import { ToastModule } from './toast/toast.module';
     RouterOutlet,
     NavbarComponent,
     NgIf,
-    ToastModule
+    ToastModule,
+    RouterModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

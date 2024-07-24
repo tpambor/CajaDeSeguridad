@@ -1,9 +1,11 @@
 import os
 from flask import Flask
 import flask_smorest
-from src.blueprints import BlueprintHealth
+from flask_cors import CORS
+from src.blueprints import BlueprintHealth, BlueprintLogin
 from db import db
 from src.modelo.declarative_base import init_db
+from flask_jwt_extended import jwt_required, JWTManager
 
 class CajaDeSeguridadApi(flask_smorest.Api):
     DEFAULT_ERROR_RESPONSE_NAME = None
@@ -11,6 +13,13 @@ class CajaDeSeguridadApi(flask_smorest.Api):
 
 def create_app():
     app = Flask(__name__)
+    # Configurar CORS
+    CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
+    jwt_secret_key = os.environ.get('JWT_SECRET_KEY', 'default_secret_key')
+    if jwt_secret_key == 'default_secret_key':
+        print("WARNING: JWT_SECRET_KEY not set. Using default secret key.")
+    app.config["JWT_SECRET_KEY"] = jwt_secret_key
+    jwt = JWTManager(app)
     app.config['API_TITLE'] = 'Cloud Conversion Tool API'
     app.config['API_VERSION'] = 'v1'
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///app.sqlite')
@@ -39,5 +48,6 @@ def create_app():
 
     api = CajaDeSeguridadApi(app)
     api.register_blueprint(BlueprintHealth)
+    api.register_blueprint(BlueprintLogin)
 
     return app
