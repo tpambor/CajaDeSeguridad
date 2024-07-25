@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 from flask_jwt_extended import JWTManager
-from src.blueprints import BlueprintHealth, BlueprintSecret
+from src.blueprints import BlueprintHealth, BlueprintSecret, BlueprintClave
 from db import db
 from src.modelo.declarative_base import init_db
 
@@ -22,5 +22,6 @@ def create_app():
 
     app.register_blueprint(BlueprintHealth, url_prefix='/api/caja')
     app.register_blueprint(BlueprintSecret, url_prefix='/api/caja')
+    app.register_blueprint(BlueprintClave, url_prefix='/api/caja')
 
     return app
