@@ -24,6 +24,10 @@ export class LoginComponent {
 
   constructor(private authService: AuthService) {}
 
+  ngOnInit() {
+    sessionStorage.setItem('token', '');
+  }
+
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
@@ -31,6 +35,7 @@ export class LoginComponent {
   onSubmit() {
     this.authService.login(this.email, this.password).subscribe(
         response => {
+            sessionStorage.setItem('token', response.access_token);
             console.log('Login successful', response);
             // Manejar la respuesta del login exitoso, como guardar el token
         },
