@@ -5,6 +5,7 @@ from src.blueprints import BlueprintHealth, BlueprintSecret, BlueprintClave
 from db import db
 from src.modelo.declarative_base import init_db
 
+API_PREFIX = '/api/caja'
 
 def create_app():
     app = Flask(__name__)
@@ -20,8 +21,8 @@ def create_app():
     with app.app_context():
         init_db(db.engine)
 
-    app.register_blueprint(BlueprintHealth, url_prefix='/api/caja')
-    app.register_blueprint(BlueprintSecret, url_prefix='/api/caja')
-    app.register_blueprint(BlueprintClave, url_prefix='/api/caja')
+    app.register_blueprint(BlueprintHealth, url_prefix=API_PREFIX)
+    app.register_blueprint(BlueprintSecret, url_prefix=API_PREFIX)
+    app.register_blueprint(BlueprintClave, url_prefix=API_PREFIX)
 
     return app

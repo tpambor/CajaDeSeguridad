@@ -1,4 +1,5 @@
 import json
+from json.decoder import JSONDecodeError
 from flask import Blueprint, Response, request
 from flask.views import MethodView
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -25,29 +26,32 @@ class VistaClaves(MethodView):
 class VistaClave(MethodView):
     init_every_request = False
 
+    def response_error(self, err):
+        return Response(err, status=422, mimetype='text/plain')
+
     @jwt_required()
     def post(self):
         logica = LogicaCaja(db.session, int(get_jwt_identity()))
 
         try:
             req = json.loads(request.data)
-        except:
-            return Response('JSON inválido', status=422, mimetype='text/plain')             
+        except JSONDecodeError:
+            return self.response_error('JSON inválido')
 
 
         if 'nombre' not in req:
-            return Response('nombre is requerido', status=422, mimetype='text/plain') 
+            return self.response_error('nombre is requerido')
 
         if 'clave' not in req:
-            return Response('clave is requerido', status=422, mimetype='text/plain') 
+            return self.response_error('clave is requerido')
 
         if 'pista' not in req:
-            return Response('pista is requerido', status=422, mimetype='text/plain') 
+            return self.response_error('pista is requerido')
 
         validacion = logica.validar_crear_editar_clave(-1, req['nombre'], req['clave'], req['pista'])
 
         if validacion != '':
-            return Response(validacion, status=422, mimetype='text/plain')            
+            return self.response_error(validacion)
 
         logica.crear_clave(req['nombre'], req['clave'], req['pista'])
 
