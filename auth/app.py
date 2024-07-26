@@ -1,6 +1,7 @@
 import os
 import datetime
 from flask import Flask
+from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token
 from blueprints import BlueprintHealth, BlueprintLogin
 from db import db
@@ -15,6 +16,7 @@ def create_app():
     app.config["JWT_SECRET_KEY"] = os.environ['JWT_SECRET_KEY']
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = datetime.timedelta(hours=4)
 
+    CORS(app)
     JWTManager(app)
 
     db.init_app(app)
