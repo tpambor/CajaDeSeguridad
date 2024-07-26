@@ -77,12 +77,36 @@ export class ElementListComponent {
     this.refreshData();
   }
 
+  mergeChecked(listA: Elemento[], listB: Elemento[]): Elemento[] {
+    const mergedListB = listB.map(objB => {
+      const matchingObjA = listA.find(objA => objA.nombre === objB.nombre);
+      return {
+        ...objB,
+        checked: matchingObjA ? matchingObjA.checked : objB.checked 
+      };
+    });
+  
+    return mergedListB;
+  }
+  
+
   refreshData() {
     this.elementoService.getElementos().subscribe((data: Elemento[]) => {
       // Asignar un id único a cada elemento
       const elementosConId = data.map((el, index) => ({ ...el, id: index + 1 }));
 
       let elementos = elementosConId.filter((o) => o.nombre.toLowerCase().includes(this.searchName.toLowerCase()));
+
+      // Añadir propiedad checked a cada elemento
+      elementos = elementos.map(el => ({ ...el, checked: false }));
+
+      if (this.elementos !== undefined) {
+        elementos = this.mergeChecked(this.elementos, elementos);
+        console.log(elementos)
+      }
+
+      console.log(this.elementos);
+      console.log(elementos);
 
       this.totalElementos = elementos.length;
 
@@ -103,10 +127,7 @@ export class ElementListComponent {
 
       elementos = elementos.slice((this.page - 1) * 10, (this.page - 1) * 10 + 10);
 
-      // Añadir propiedad checked a cada elemento
-      elementos = elementos.map(el => ({ ...el, checked: false }));
-
-      if (elementos.some((o) => !o.checked)) {
+      if (!elementos.some((o) => o.checked)) {
         this.selectionState = 'none';
       }
       else if (elementos.every((o) => o.checked)) {
@@ -114,6 +135,7 @@ export class ElementListComponent {
       }
       else {
         this.selectionState = 'some';
+        console.log('some');
       }
 
       this.elementos = elementos;

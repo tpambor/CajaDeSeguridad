@@ -14,28 +14,28 @@ from src.logica.LogicaCaja import LogicaCaja
 from src.logica.typing import TipoElemento
 
 def gen_id(fake: Faker, vencimiento=None):
-    id = Identificacion()
-    id.nombre = fake.unique.name()
-    id.nota = fake.text()
-    id.numero = str(fake.random_number(digits=fake.random_int(3, 20), fix_len=True))
-    id.nombre_completo = fake.name()
-    id.nacimiento = fake.date_of_birth(minimum_age=18, maximum_age=70)
-    id.expedicion = fake.date_between('-2y', 'now')
-    id.vencimiento = fake.date_between('+4M', '+5y') if vencimiento == None else vencimiento
-    id.caja_id = 1
+    ident = Identificacion()
+    ident.nombre = fake.unique.name()
+    ident.nota = fake.text()
+    ident.numero = str(fake.random_number(digits=fake.random_int(3, 20), fix_len=True))
+    ident.nombre_completo = fake.name()
+    ident.nacimiento = fake.date_of_birth(minimum_age=18, maximum_age=70)
+    ident.expedicion = fake.date_between('-2y', 'now')
+    ident.vencimiento = fake.date_between('+4M', '+5y') if vencimiento == None else vencimiento
+    ident.caja_id = 1
 
     esperado: TipoElemento = {
-        "nombre_elemento": id.nombre,
-        "notas": id.nota,
+        "nombre_elemento": ident.nombre,
+        "notas": ident.nota,
         "tipo": "Identificación",
-        "numero": id.numero,
-        "nombre": id.nombre_completo,
-        "fecha_nacimiento": id.nacimiento.isoformat(),
-        "fecha_exp": id.expedicion.isoformat(),
-        "fecha_venc": id.vencimiento.isoformat(),
+        "numero": ident.numero,
+        "nombre": ident.nombre_completo,
+        "fecha_nacimiento": ident.nacimiento.isoformat(),
+        "fecha_exp": ident.expedicion.isoformat(),
+        "fecha_venc": ident.vencimiento.isoformat(),
     }
 
-    return (id, esperado)
+    return (ident, esperado)
 
 class IdentificacionTestCase(unittest.TestCase):
     def setUp(self):
@@ -92,13 +92,13 @@ class IdentificacionTestCase(unittest.TestCase):
             self.assertEqual(esperado, self.logica.dar_elemento(idx))
 
     # Función de ayuda para llamar a self.logica.validar_crear_editar_id con los datos de un objeto de tipo Identificación
-    def validar_crear_editar(self, idx, id: Identificacion, vencimiento = None, expedicion = None, nacimiento = None):
-        fvenc = id.vencimiento.isoformat() if vencimiento is None else vencimiento
-        fexp = id.expedicion.isoformat() if expedicion is None else expedicion
-        fnaci = id.nacimiento.isoformat() if nacimiento is None else nacimiento
+    def validar_crear_editar(self, idx, ident: Identificacion, vencimiento = None, expedicion = None, nacimiento = None):
+        fvenc = ident.vencimiento.isoformat() if vencimiento is None else vencimiento
+        fexp = ident.expedicion.isoformat() if expedicion is None else expedicion
+        fnaci = ident.nacimiento.isoformat() if nacimiento is None else nacimiento
         return self.logica.validar_crear_editar_id(idx,
-            id.nombre, id.numero, id.nombre_completo, fnaci,
-            fexp, fvenc,id.nota)
+            ident.nombre, ident.numero, ident.nombre_completo, fnaci,
+            fexp, fvenc, ident.nota)
 
     # Prueba para verificar que no se genera un error al crear un elemento valido
     def test_agregar_elemento_valido_sin_error(self):
@@ -204,11 +204,11 @@ class IdentificacionTestCase(unittest.TestCase):
 
     # Prueba para verificar que al crear una ID se ha guardado en el base de datos
     def test_agregar_id_db(self):
-        id = self.test_data[0][0]
+        ident = self.test_data[0][0]
 
         self.logica.crear_id(
-             id.nombre, id.numero, id.nombre_completo, id.nacimiento.isoformat(),
-            id.expedicion.isoformat(), id.vencimiento.isoformat(),id.nota)
+             ident.nombre, ident.numero, ident.nombre_completo, ident.nacimiento.isoformat(),
+            ident.expedicion.isoformat(), ident.vencimiento.isoformat(), ident.nota)
 
         elementos = self.session.query(Elemento).all()
         self.assertEqual(1, len(elementos))
