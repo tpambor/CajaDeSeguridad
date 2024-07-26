@@ -61,6 +61,3 @@ aplicacion.sqlite
 /front/coverage
 /front/libpeerconnection.log
 /front/typings
-
-# Venv
-/venv
