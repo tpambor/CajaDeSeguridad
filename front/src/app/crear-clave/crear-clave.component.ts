@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { ToastService } from "../toast/toast.service";
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 import { CommonModule } from '@angular/common';
 import { NgClass } from '@angular/common';
+import { environment } from '../environments/environment';
+import { Injectable } from '@angular/core';
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -14,7 +16,7 @@ import { NgClass } from '@angular/common';
   standalone: true,
   imports: [
     RouterLink,
-    FormsModule,HttpClientModule,
+    FormsModule,
     NgClass,
     CommonModule,
   ],
@@ -29,8 +31,8 @@ export class CrearClaveComponent {
   claveInput: string = '';
   confirmarClave: string = '';
   pista: string = '';
+  clavesNoCoinciden: boolean = false;
 
-  private apiUrl = 'http://localhost:3000/CrearClave';
 
   generateRandomPassword() {
     const GRUPO_MAYUSCULA = "ABCDEFGHIJKLMNOPQRSTUVWXYZÑÉÓÚÍÜ";
@@ -65,28 +67,33 @@ export class CrearClaveComponent {
   }
   constructor(private toastService: ToastService, private router: Router, private http: HttpClient) {} // Inject HttpClient
 
-  onSubmit() {
-    if (this.nombreClave==null || this.claveInput==null || this.confirmarClave ==null|| this.pista==null) {
-      this.toastService.showErrorToast("Todos los campos son obligatorios");
+  onSubmit(form: NgForm) {
+    if (this.claveInput !== this.confirmarClave) {
+      this.clavesNoCoinciden = true;
+      this.showErrorToast();
       return;
     }
+    this.clavesNoCoinciden = false;
 
     const postData = {
-      nombreClave: this.nombreClave,
+      nombre: this.nombreClave,
       clave: this.claveInput,
-      confirmarClave: this.confirmarClave,
       pista: this.pista
     };
 
 
-    this.http.post<{ response: any }>('http://localhost:3000/CrearClave', postData).subscribe(
+    this.http.post<{ response: any }>(environment.baseUrl +'api/caja/clave', postData).subscribe(
       (response: { response: any }) => {
-        this.toastService.showSuccessToast("Se ha creado la clave");
-        this.router.navigateByUrl("/elements");
-        },
-        (error: any) => {
-        this.toastService.showErrorToast("Error al crear la clave");
-        }
+          this.toastService.showSuccessToast("Se ha creado la clave");
+          this.router.navigateByUrl("/elements");
+          },
+          (error: any) => {
+          this.toastService.showErrorToast("Error al crear la clave");
+          }
     );
+  }
+
+  showErrorToast() {
+    this.toastService.showErrorToast('Las claves no coinciden');
   }
 }
