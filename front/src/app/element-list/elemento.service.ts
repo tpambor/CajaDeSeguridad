@@ -8,12 +8,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ElementoService {
+  private apiUrl = environment.baseUrl + 'api/caja/secretos';
+  
+  constructor(private http: HttpClient) { }
 
-private apiUrl = environment.baseUrl + 'api/caja/secretos';
-constructor(private http: HttpClient) { }
-
-getElementos(): Observable<Elemento[]> {
-  return this.http.get<Elemento[]>(this.apiUrl);
-}
-
+  getElementos(): Observable<Elemento[]> {
+    return this.http.get<Elemento[]>(this.apiUrl);
+  }
 }
