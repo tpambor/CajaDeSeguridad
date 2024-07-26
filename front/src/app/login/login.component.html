@@ -21,7 +21,7 @@
                 <div class="input-group">
                     <input type="{{showPassword ? 'text' : 'password' }}" class="form-control form-floating input-password" id="password" placeholder="Ingresa tu contraseña" [(ngModel)]="password" name="password" required />
                     <span class="input-group-text">
-                        <i class="bi" [ngClass]="{'bi-eye': !showPassword, 'bi-eye-slash': showPassword}" id="toggle-password" style="cursor: pointer" (click)="togglePasswordVisibility()"></i>
+                        <i class="bi" [ngClass]="{'bi-eye': !showPassword, 'bi-eye-slash': showPassword}" id="toggle-password" style="cursor: pointer" (click)="togglePasswordVisibility()" (keypress)="togglePasswordVisibility()"></i>
                     </span>
                 </div>
             </div>
