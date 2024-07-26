@@ -7,8 +7,6 @@ import { HttpClient } from '@angular/common/http'; // Import HttpClient
 import { CommonModule } from '@angular/common';
 import { NgClass } from '@angular/common';
 import { environment } from '../environments/environment';
-import { Injectable } from '@angular/core';
-import { NgForm } from '@angular/forms';
 
 
 @Component({
