@@ -21,10 +21,14 @@
     </div>
     <div class="mb-3">
       <label for="pista" class="form-label">Pista</label>
-      <textarea type="text" class="form-control margin-inline" name="pista" required [(ngModel)]="pista" placeholder="Ingresa una pista para recordar la clave" [ngClass]="{'is-invalid': claveForm.submitted && !pista}"></textarea>
+      <textarea type="text" class="form-control margin-inline" name="pista" required [(ngModel)]="pista" placeholder="Ingresa una pista para recordar la clave" [ngClass]="{'is-invalid': claveForm?.submitted && !pista}" minlength="5"></textarea>
+      <div *ngIf="claveForm?.submitted && pista.length < 3" class="invalid-feedback">
+        La pista debe tener al menos 3 caracteres.
+      </div>
     </div>
     <div class="alignCenter d-flex justify-content-between">
-      <button type="submit" routerLink="/elements" class="btn btn-cancel">Cancelar</button>
+      <button (click)="back()"  class="btn btn-cancel">Cancelar</button>
+
       <button type="submit" class="btn btn-primary">Crear</button>
     </div>
     </form>

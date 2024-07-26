@@ -20,14 +20,15 @@ import { environment } from '../environments/environment';
   styleUrls: ['./crear-clave.component.css']
 })
 export class CrearClaveComponent {
-
   nombreClave: string = '';
   claveInput: string = '';
   confirmarClave: string = '';
   pista: string = '';
   clavesNoCoinciden: boolean = false;
 
-
+  back(){
+    this.router.navigateByUrl("/elements");
+  }
   generateRandomPassword() {
     const GRUPO_MAYUSCULA = "ABCDEFGHIJKLMNOPQRSTUVWXYZÑÉÓÚÍÜ";
     const GRUPO_MINUSCULA = "abcdefghijklmnopqrstuvwxyzñéóúíü";
@@ -62,6 +63,7 @@ export class CrearClaveComponent {
       return array;
   };
 
+
     const clave = getRandomCharacters(GRUPO_MAYUSCULA, getRandomInt(2, 4)) +
         getRandomCharacters(GRUPO_MINUSCULA, getRandomInt(2, 4)) +
         getRandomCharacters(GRUPO_NUMEROS, getRandomInt(2, 4)) +
@@ -84,6 +86,12 @@ export class CrearClaveComponent {
     }
     this.clavesNoCoinciden = false;
 
+
+    if (this.pista.length<3) {
+      this.pista = "";
+      this.showErrorToast();
+      return;
+    }
     const postData = {
       nombre: this.nombreClave,
       clave: this.claveInput,
