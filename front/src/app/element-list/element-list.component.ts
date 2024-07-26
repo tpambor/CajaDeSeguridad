@@ -3,8 +3,6 @@ import { Component, Directive, EventEmitter, Input, Output, QueryList, ViewChild
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NgbDropdownModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Alarm } from '../alarm';
-import { ALARMS } from '../alarms';
 import { ToastService } from '../toast/toast.service';
 
 // Manejo de Elementos
@@ -15,7 +13,9 @@ export type SortColumn = keyof Elemento | '';
 export type SortDirection = 'asc' | 'desc' | '';
 const rotate: { [key: string]: SortDirection } = { asc: 'desc', desc: '', '': 'asc' };
 
-const compare = (v1: string | number | boolean, v2: string | number | boolean) => ((v1 < v2) ? 1 : 0) - ((v1 > v2) ? 1 : 0);
+type CompType = string | number | boolean;
+
+const compare = (v1: CompType, v2: CompType) => ((v1 < v2) ? 1 : 0) - ((v1 > v2) ? 1 : 0);
 
 export interface SortEvent {
   column: SortColumn;
@@ -92,7 +92,7 @@ export class ElementListComponent {
           const valueA = a[this.sortColumn as keyof Elemento];
           const valueB = b[this.sortColumn as keyof Elemento];
           if (typeof valueA === 'string' || typeof valueA === 'number' || typeof valueA === 'boolean') {
-            const res = compare(valueA, valueB as string | number | boolean);
+            const res = compare(valueA, valueB as CompType);
             return this.sortDirection === 'asc' ? res : -res;
           }
           return 0; // No se puede comparar, considerar igual
@@ -106,7 +106,7 @@ export class ElementListComponent {
       // Añadir propiedad checked a cada elemento
       elementos = elementos.map(el => ({ ...el, checked: false }));
 
-      if (elementos.some((o) => o.checked == false)) {
+      if (elementos.some((o) => !o.checked)) {
         this.selectionState = 'none';
       }
       else if (elementos.every((o) => o.checked)) {
