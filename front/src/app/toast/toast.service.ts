@@ -19,4 +19,12 @@ export class ToastService {
       message,
     });
   }
+
+
+  showErrorToast(message: string) {
+    this._toastEvents.next({
+      type: EventTypes.Error,
+      message,
+    });
+  }
 }

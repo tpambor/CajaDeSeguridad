@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
-import { NgIf } from '@angular/common';
 import { ToastModule } from './toast/toast.module';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +11,9 @@ import { ToastModule } from './toast/toast.module';
   imports: [
     RouterOutlet,
     NavbarComponent,
-    NgIf,
-    ToastModule
+    ToastModule,
+    CommonModule,
+    HttpClientModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'

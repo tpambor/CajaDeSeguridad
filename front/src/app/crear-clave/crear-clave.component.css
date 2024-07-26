@@ -1,0 +1,91 @@
+
+.registration-container {
+  max-width: 480px;
+  margin: auto;
+  text-align: center;
+  margin-top: 5%;
+}
+.login-link {
+  margin-top: 20px;
+}
+.text_color, h1,h2,label{
+  color: #24422A;
+}
+input{
+  height: 38px;
+  width: 360px;
+}
+form{
+  text-align: left;
+}
+.divButton{
+  text-align: center;
+  max-width: 360px;
+}
+ button{
+  background-color: #36633F;
+    height: 38px;
+    width: 40%;
+    margin: 0;
+    color: white;
+ }
+
+.btn-cancel{
+    color: #24422A;
+    background-color: initial;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    width: 40%;
+
+}
+
+.margin-inline {
+  display: inline;
+  margin-left: 0;
+  WIDTH: 100%;
+
+
+}
+
+.select{
+  height: 38px;
+  width: 100%;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    background: initial;
+    display: block;
+
+}
+
+.selectList{
+  display: flex;
+}
+.paddingright{
+  margin-right: 2%;
+}
+.selectList DIV {
+  WIDTH: 50%;
+}
+
+.alignCenter{
+    TEXT-ALIGN: CENTER;
+}
+
+#generarClave{
+
+    float: right;
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: auto;
+    height: 24px;
+    background: none;
+    color: black;
+
+}
+
+.error {
+  color: red;
+}
+.is-invalid {
+  border: 1px solid red;
+}
