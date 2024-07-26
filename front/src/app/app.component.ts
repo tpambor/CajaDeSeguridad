@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
-import { NgIf } from '@angular/common';
 import { ToastModule } from './toast/toast.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,7 +11,6 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     RouterOutlet,
     NavbarComponent,
-    NgIf,
     ToastModule,
     CommonModule,
     HttpClientModule
