@@ -42,20 +42,26 @@ export class CrearClaveComponent {
       const array = new Uint32Array(1);
       window.crypto.getRandomValues(array);
       return group.charAt(array[0] % group.length);
-  };
+    };
 
-  const getRandomCharacters = (group: string, count: number) => {
-    let characters = '';
-    for (let i = 0; i < count; i++) {
-        characters += getRandomCharacter(group);
-    }
-    return characters;
-};
+    const getRandomCharacters = (group: string, count: number) => {
+        let characters = '';
+        for (let i = 0; i < count; i++) {
+            characters += getRandomCharacter(group);
+        }
+        return characters;
+    };
 
-    const clave = getRandomCharacters(GRUPO_MAYUSCULA, Math.floor(Math.random() * 3) + 2) +
-    getRandomCharacters(GRUPO_MINUSCULA, Math.floor(Math.random() * 3) + 2) +
-    getRandomCharacters(GRUPO_NUMEROS, Math.floor(Math.random() * 3) + 2) +
-    getRandomCharacters(GRUPO_ESPECIALES, Math.floor(Math.random() * 3) + 2);
+    const getRandomInt = (min: number, max: number) => {
+        const array = new Uint32Array(1);
+        window.crypto.getRandomValues(array);
+        return Math.floor(array[0] / (0xFFFFFFFF + 1) * (max - min + 1)) + min;
+    };
+
+    const clave = getRandomCharacters(GRUPO_MAYUSCULA, getRandomInt(2, 4)) +
+        getRandomCharacters(GRUPO_MINUSCULA, getRandomInt(2, 4)) +
+        getRandomCharacters(GRUPO_NUMEROS, getRandomInt(2, 4)) +
+        getRandomCharacters(GRUPO_ESPECIALES, getRandomInt(2, 4));
 
     const shuffledClave = clave.split('').sort(() => Math.random() - 0.5).join('');
 
