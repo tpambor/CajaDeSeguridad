@@ -7,7 +7,11 @@ import { Alarm } from '../alarm';
 import { ALARMS } from '../alarms';
 import { ToastService } from '../toast/toast.service';
 
-export type SortColumn = keyof Alarm | '';
+// Manejo de Elementos
+import { Elemento } from './elemento';
+import { ElementoService } from './elemento.service';
+
+export type SortColumn = keyof Elemento | '';
 export type SortDirection = 'asc' | 'desc' | '';
 const rotate: { [key: string]: SortDirection } = { asc: 'desc', desc: '', '': 'asc' };
 
@@ -53,19 +57,20 @@ export class NgbdSortableHeader {
   styleUrl: './element-list.component.css'
 })
 export class ElementListComponent {
-  alarms!: Alarm[];
+  elementos!: Elemento[];
   sortDirection: SortDirection = '';
   sortColumn: SortColumn = '';
-  totalAlarms!: number;
+  totalElementos!: number;
   page = 1;
   pageCount = 1;
   selectionState!: string;
   searchName = '';
-  alarmToDelete!: Alarm;
+  elementoToDelete!: Elemento;
 
   @ViewChildren(NgbdSortableHeader) headers!: QueryList<NgbdSortableHeader>;
 
   constructor(
+    private elementoService: ElementoService,
     private toastService: ToastService,
     private modalService: NgbModal
     ) {
@@ -73,35 +78,46 @@ export class ElementListComponent {
   }
 
   refreshData() {
-    let alarms;
+    this.elementoService.getElementos().subscribe((data: Elemento[]) => {
+      // Asignar un id único a cada elemento
+      const elementosConId = data.map((el, index) => ({ ...el, id: index + 1 }));
 
-    alarms = ALARMS.filter((o) => o.name.toLowerCase().includes(this.searchName.toLowerCase()));
+      let elementos = elementosConId.filter((o) => o.nombre.toLowerCase().includes(this.searchName.toLowerCase()));
 
-    this.totalAlarms = alarms.length;
+      this.totalElementos = elementos.length;
 
-    // sort alarms
-    if (this.sortDirection !== '' && this.sortColumn !== '') {
-      alarms = [...alarms].sort((a, b) => {
-        const res = compare(a[this.sortColumn as keyof Alarm], b[this.sortColumn as keyof Alarm]);
-        return this.sortDirection === 'asc' ? res : -res;
-      });
-    }
+      // sort elementos
+      if (this.sortDirection !== '' && this.sortColumn !== '') {
+        elementos = [...elementos].sort((a, b) => {
+          const valueA = a[this.sortColumn as keyof Elemento];
+          const valueB = b[this.sortColumn as keyof Elemento];
+          if (typeof valueA === 'string' || typeof valueA === 'number' || typeof valueA === 'boolean') {
+            const res = compare(valueA, valueB as string | number | boolean);
+            return this.sortDirection === 'asc' ? res : -res;
+          }
+          return 0; // No se puede comparar, considerar igual
+        });
+      }
 
-    this.pageCount = Math.max(1, Math.ceil(alarms.length / 10));
+      this.pageCount = Math.max(1, Math.ceil(elementos.length / 10));
 
-    alarms = alarms.slice((this.page - 1) * 10, (this.page - 1) * 10 + 10);
+      elementos = elementos.slice((this.page - 1) * 10, (this.page - 1) * 10 + 10);
 
-    if (alarms.some((o) => o.checked) == false) {
-      this.selectionState = 'none';
-    }
-    else if (alarms.every((o) => o.checked)) {
-      this.selectionState = 'all';
-    }
-    else {
-      this.selectionState = 'some';
-    }
+      // Añadir propiedad checked a cada elemento
+      elementos = elementos.map(el => ({ ...el, checked: false }));
 
-    this.alarms = alarms;
+      if (elementos.some((o) => o.checked == false)) {
+        this.selectionState = 'none';
+      }
+      else if (elementos.every((o) => o.checked)) {
+        this.selectionState = 'all';
+      }
+      else {
+        this.selectionState = 'some';
+      }
+
+      this.elementos = elementos;
+    });
   }
 
   onSort({ column, direction }: SortEvent) {
@@ -147,12 +163,12 @@ export class ElementListComponent {
   }
 
   deseletAll() {
-    ALARMS.forEach((o, i, a) => a[i].checked = false);
+    this.elementos.forEach((o) => o.checked = false);
   }
 
   toggleSelectAll() {
     if (this.selectionState !== 'all') {
-      this.alarms.forEach((o, i, a) => a[i].checked = true);
+      this.elementos.forEach((o) => o.checked = true);
     }
     else {
       this.deseletAll();
@@ -165,20 +181,18 @@ export class ElementListComponent {
     this.refreshData()
   }
 
-  deleteAlarm() {
-    this.toastService.showSuccessToast('Se ha eliminado la alarma ' + this.alarmToDelete.name)
+  deleteElemento() {
+    this.toastService.showSuccessToast('Se ha eliminado el elemento ' + this.elementoToDelete.nombre);
 
-    ALARMS.splice(ALARMS.findIndex((o) => o.id === this.alarmToDelete.id), 1);
-
+    // Aquí eliminarías el elemento de la lista en tu backend y actualizarías la lista localmente
+    // Ejemplo: this.elementos = this.elementos.filter((o) => o.id !== this.elementoToDelete.id);
     this.refreshData();
   }
 
-  deleteSelectedAlarms() {
-    while(ALARMS.some((o) => o.checked)) {
-      ALARMS.splice(ALARMS.findIndex((o) => o.checked), 1);
-    }
-
-    this.toastService.showSuccessToast('Se han eliminado las alarmas seleccionadas')
+  deleteSelectedElementos() {
+    // Aquí eliminarías los elementos seleccionados de la lista en tu backend y actualizarías la lista localmente
+    // Ejemplo: this.elementos = this.elementos.filter((o) => !o.checked);
+    this.toastService.showSuccessToast('Se han eliminado los elementos seleccionados');
     this.refreshData();
   }
 
@@ -190,10 +204,10 @@ export class ElementListComponent {
   }
 
   openDeleteModal(id: number, content: TemplateRef<any>) {
-    this.alarmToDelete = ALARMS.find((o) => o.id === id) as Alarm;
+    this.elementoToDelete = this.elementos.find((o) => o.id === id) as Elemento;
     this.modalService.open(content, { centered: true }).result.then(
       (result) => {
-        this.deleteAlarm();
+        this.deleteElemento();
       },
       (reason) => {
       },
@@ -203,10 +217,14 @@ export class ElementListComponent {
   openDeleteSelectionModal(content: TemplateRef<any>) {
     this.modalService.open(content, { centered: true }).result.then(
       (result) => {
-        this.deleteSelectedAlarms();
+        this.deleteSelectedElementos();
       },
       (reason) => {
       },
     );
+  }
+
+  trackById(index: number, item: Elemento): number {
+    return item.id;
   }
 }

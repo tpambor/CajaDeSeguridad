@@ -1,4 +1,5 @@
 export interface Elemento {
+  id: number;
   nombre: string;
   tipo: 'Tarjeta' | 'Identificación' | 'Login' | 'Secreto';
   notas: string;
@@ -33,4 +34,5 @@ export interface Elemento {
     clave: string;
     secreto: string;
   };
+  checked?: boolean;
 }
