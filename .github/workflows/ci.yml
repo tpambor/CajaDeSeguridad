@@ -98,7 +98,13 @@ jobs:
         env:
           AWS_REGION: ${{ steps.ecr.outputs.region }}
         uses: aws-actions/amazon-ecr-login@v2
-      - name: Build
-        run: docker build -t ${{ steps.ecr.outputs.url }}:${{ github.sha }} .
-      - name: Push
-        run: docker push ${{ steps.ecr.outputs.url }}:${{ github.sha }}
+      - name: Build caja
+        run: docker build -t ${{ steps.ecr.outputs.url }}:caja-${{ github.sha }} .
+      - name: Push caja
+        run: docker push ${{ steps.ecr.outputs.url }}:caja-${{ github.sha }}
+      - name: Build auth
+        working-directory: auth
+        run: docker build -t ${{ steps.ecr.outputs.url }}:auth-${{ github.sha }} .
+      - name: Push auth
+        working-directory: auth
+        run: docker push ${{ steps.ecr.outputs.url }}:auth-${{ github.sha }}
