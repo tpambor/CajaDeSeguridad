@@ -54,3 +54,5 @@ aplicacion.sqlite
 terraform/
 .vscode/
 .github/
+front/
+auth/
