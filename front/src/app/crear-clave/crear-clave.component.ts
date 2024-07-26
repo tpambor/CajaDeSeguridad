@@ -58,12 +58,20 @@ export class CrearClaveComponent {
         return Math.floor(array[0] / (0xFFFFFFFF + 1) * (max - min + 1)) + min;
     };
 
+    const shuffleArray = (array: string[]) => {
+      for (let i = array.length - 1; i > 0; i--) {
+          const j = getRandomInt(0, i);
+          [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+  };
+
     const clave = getRandomCharacters(GRUPO_MAYUSCULA, getRandomInt(2, 4)) +
         getRandomCharacters(GRUPO_MINUSCULA, getRandomInt(2, 4)) +
         getRandomCharacters(GRUPO_NUMEROS, getRandomInt(2, 4)) +
         getRandomCharacters(GRUPO_ESPECIALES, getRandomInt(2, 4));
 
-    const shuffledClave = clave.split('').sort(() => Math.random() - 0.5).join('');
+    const shuffledClave = shuffleArray(clave.split('')).join('');
 
     this.claveInput = shuffledClave;
     this.confirmarClave = shuffledClave;
