@@ -23,8 +23,6 @@ import { NgForm } from '@angular/forms';
   templateUrl: './crear-clave.component.html',
   styleUrls: ['./crear-clave.component.css']
 })
-
-
 export class CrearClaveComponent {
 
   nombreClave: string = '';
@@ -41,33 +39,34 @@ export class CrearClaveComponent {
     const GRUPO_ESPECIALES = "?-*!@#$/(){}=.,;:";
 
     const getRandomCharacter = (group: string) => {
-      return group.charAt(Math.floor(Math.random() * group.length));
-    };
+      const array = new Uint32Array(1);
+      window.crypto.getRandomValues(array);
+      return group.charAt(array[0] % group.length);
+  };
 
-    const getRandomCharacters = (group: string, count: number) => {
-      let characters = '';
-      for (let i = 0; i < count; i++) {
+  const getRandomCharacters = (group: string, count: number) => {
+    let characters = '';
+    for (let i = 0; i < count; i++) {
         characters += getRandomCharacter(group);
-      }
-      return characters;
-    };
+    }
+    return characters;
+};
 
     const clave = getRandomCharacters(GRUPO_MAYUSCULA, Math.floor(Math.random() * 3) + 2) +
-      getRandomCharacters(GRUPO_MINUSCULA, Math.floor(Math.random() * 3) + 2) +
-      getRandomCharacters(GRUPO_NUMEROS, Math.floor(Math.random() * 3) + 2) +
-      getRandomCharacters(GRUPO_ESPECIALES, Math.floor(Math.random() * 3) + 2);
+    getRandomCharacters(GRUPO_MINUSCULA, Math.floor(Math.random() * 3) + 2) +
+    getRandomCharacters(GRUPO_NUMEROS, Math.floor(Math.random() * 3) + 2) +
+    getRandomCharacters(GRUPO_ESPECIALES, Math.floor(Math.random() * 3) + 2);
 
     const shuffledClave = clave.split('').sort(() => Math.random() - 0.5).join('');
 
-
-      this.claveInput = shuffledClave;
-      this.confirmarClave = shuffledClave;
+    this.claveInput = shuffledClave;
+    this.confirmarClave = shuffledClave;
 
     return shuffledClave;
   }
   constructor(private toastService: ToastService, private router: Router, private http: HttpClient) {} // Inject HttpClient
 
-  onSubmit(form: NgForm) {
+  onSubmit() {
     if (this.claveInput !== this.confirmarClave) {
       this.clavesNoCoinciden = true;
       this.showErrorToast();
