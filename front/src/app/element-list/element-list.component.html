@@ -1,104 +1,100 @@
 <div class="row pt-5 pb-5">
-    <div class="col d-flex justify-content-between align-items-center">
-        <h1>Tus alarmas</h1>
-        <button type="submit"class="btn btn-primary" style="width: 196px;" routerLink="/alarms/new">Agregar alarma</button>
-    </div>
+  <div class="col d-flex justify-content-between align-items-center">
+      <h1>Listado de Elementos</h1>
+      <button type="submit"class="btn btn-primary" style="width: 196px;" routerLink="/elementos/new">Crear Clave Favorita</button>
+  </div>
 </div>
 
 <div class="row">
-    <div class="col">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th scope="col" style="width: 50px;" (click)="toggleSelectAll()"><input type="checkbox" value="" [checked]="selectionState === 'all'" [indeterminate]="selectionState === 'some'"></th>
-                    <th scope="col" style="min-width: 180px;" sortable="name" (sort)="onSort($event)">Nombre
-                        <div ngbDropdown #dropdownSearch="ngbDropdown" placement="right-top" class="d-inline-block">
-                            <i id="dropdown-search" class="bi bi-funnel-fill ps-3" (click)="$event.stopPropagation()" ngbDropdownToggle></i>
-                            <div ngbDropdownMenu aria-labelledby="dropdown-search" (click)="$event.stopPropagation()">
-                                <form class="px-2 py-2" style="width: 260px;">
-                                    <div class="mb-3">
-                                        <input type="text" class="form-control" id="search-name" #searchName placeholder="Buscar alarma" />
-                                    </div>
-                                    <button type="submit" class="btn btn-primary w-100" (click)="dropdownSearch.close(); search(searchName.value);"><i class="bi bi-search pe-2"></i><span>Buscar</span></button>
-                                </form>
-                            </div>
-                        </div>
-                    </th>
-                    <th scope="col" style="min-width: 90px;" sortable="arrival" (sort)="onSort($event)">Hora llegada</th>
-                    <th scope="col" style="min-width: 85px;" sortable="advance" (sort)="onSort($event)">Antelación</th>
-                    <th scope="col" style="text-align: center; width: 160px;">Acciones</th>
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-                @for (alarm of alarms; track alarm.id) {
-                    <tr>
-                        <td><input type="checkbox" value="" [(ngModel)]="alarm.checked" (ngModelChange)="onCheckboxChange()"></td>
-                        <td>{{ alarm.name }}</td>
-                        <td>{{ alarm.arrival }}</td>
-                        <td>{{ alarm.advance }}</td>
-                        <td><div class="d-flex flex-wrap justify-content-between px-2"><button class="btn btn-link p-0" (click)="openDeleteModal(alarm.id, modalContent)">Eliminar</button><a routerLink="/alarms/{{alarm.id}}/edit">Editar</a></div></td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <div class="d-flex justify-content-between">
-            <div id="delete-selection" class="px-2">
-                <button class="btn btn-link p-0 text-start" [ngClass]="{'disabled': selectionState === 'none'}" (click)="openDeleteSelectionModal(modal2Content)"><i class="bi bi-trash3-fill pe-2"></i>Eliminar alarmas seleccionadas</button>
-            </div>
-            <nav id="pagination" class="d-flex justify-content-end align-items-baseline">
-                <span class="pe-2" style="min-width: 120px;">Total {{ totalAlarms }} items</span>
-                <ul class="pagination">
-                    <li class="page-item">
-                        <a class="page-link" aria-label="Previous" (click)="previousPage()">
-                            <i class="bi bi-chevron-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item" *ngFor="let item of [].constructor(pageCount); let i = index" [ngClass]="{'active': (i+1) === page}">
-                        <a class="page-link" (click)="selectPage(i+1)">{{ i + 1 }}</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" aria-label="Next" (click)="nextPage()">
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </div>
+  <div class="col">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th scope="col" style="width: 50px;" (click)="toggleSelectAll()"><input type="checkbox" value="" [checked]="selectionState === 'all'" [indeterminate]="selectionState === 'some'"></th>
+                  <th scope="col" style="min-width: 180px;" sortable="nombre" (sort)="onSort($event)">Nombre
+                      <div ngbDropdown #dropdownSearch="ngbDropdown" placement="right-top" class="d-inline-block">
+                          <i id="dropdown-search" class="bi bi-funnel-fill ps-3" (click)="$event.stopPropagation()" ngbDropdownToggle></i>
+                          <div ngbDropdownMenu aria-labelledby="dropdown-search" (click)="$event.stopPropagation()">
+                              <form class="px-2 py-2" style="width: 260px;">
+                                  <div class="mb-3">
+                                      <input type="text" class="form-control" id="search-name" #searchName placeholder="Buscar elemento" />
+                                  </div>
+                                  <button type="submit" class="btn btn-primary w-100" (click)="dropdownSearch.close(); search(searchName.value);"><i class="bi bi-search pe-2"></i><span>Buscar</span></button>
+                              </form>
+                          </div>
+                      </div>
+                  </th>
+                  <th scope="col" style="min-width: 90px;" sortable="tipo" (sort)="onSort($event)">Tipo</th>
+                  <th scope="col" style="text-align: center; width: 160px;">Acciones</th>
+              </tr>
+          </thead>
+          <tbody class="table-group-divider">
+              <tr *ngFor="let elemento of elementos; trackBy: trackById">
+                  <td><input type="checkbox" [(ngModel)]="elemento.checked" (ngModelChange)="onCheckboxChange()"></td>
+                  <td>{{ elemento.nombre }}</td>
+                  <td>{{ elemento.tipo }}</td>
+                  <td><div class="d-flex flex-wrap justify-content-between px-2"><button class="btn btn-link p-0" (click)="openDeleteModal(elemento.id, modalContent)">Eliminar</button><a routerLink="/elementos/{{elemento.id}}/edit">Editar</a></div></td>
+              </tr>
+          </tbody>
+      </table>
+      <div class="d-flex justify-content-between">
+          <div id="delete-selection" class="px-2">
+              <button class="btn btn-link p-0 text-start" [ngClass]="{'disabled': selectionState === 'none'}" (click)="openDeleteSelectionModal(modal2Content)"><i class="bi bi-trash3-fill pe-2"></i>Eliminar elementos seleccionados</button>
+          </div>
+          <nav id="pagination" class="d-flex justify-content-end align-items-baseline">
+              <span class="pe-2" style="min-width: 120px;">Total {{ totalElementos }} items</span>
+              <ul class="pagination">
+                  <li class="page-item">
+                      <a class="page-link" aria-label="Previous" (click)="previousPage()">
+                          <i class="bi bi-chevron-left"></i>
+                      </a>
+                  </li>
+                  <li class="page-item" *ngFor="let item of [].constructor(pageCount); let i = index" [ngClass]="{'active': (i+1) === page}">
+                      <a class="page-link" (click)="selectPage(i+1)">{{ i + 1 }}</a>
+                  </li>
+                  <li class="page-item">
+                      <a class="page-link" aria-label="Next" (click)="nextPage()">
+                          <i class="bi bi-chevron-right"></i>
+                      </a>
+                  </li>
+              </ul>
+          </nav>
+      </div>
+  </div>
 </div>
 
 <ng-template #modalContent let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title">Eliminar alarma</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close')"></button>
-    </div>
-    <div class="modal-body">
-        <form>
-            <div class="mb-3">
-                <span>¿Estás seguro de eliminar la alarma {{ alarmToDelete.name }}?</span>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('Cancelar')">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="modal.close('Confirmar')">Confirmar</button>
-    </div>
+  <div class="modal-header">
+      <h4 class="modal-title">Eliminar elemento</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close')"></button>
+  </div>
+  <div class="modal-body">
+      <form>
+          <div class="mb-3">
+              <span>¿Estás seguro de eliminar el elemento {{ elementoToDelete.nombre }}?</span>
+          </div>
+      </form>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('Cancelar')">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="modal.close('Confirmar')">Confirmar</button>
+  </div>
 </ng-template>
 
 <ng-template #modal2Content let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title">Eliminar alarmas</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close')"></button>
-    </div>
-    <div class="modal-body">
-        <form>
-            <div class="mb-3">
-                <span>¿Estás seguro de eliminar las alarmas seleccionadas?</span>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('Cancelar')">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="modal.close('Confirmar')">Confirmar</button>
-    </div>
+  <div class="modal-header">
+      <h4 class="modal-title">Eliminar elementos</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Close')"></button>
+  </div>
+  <div class="modal-body">
+      <form>
+          <div class="mb-3">
+              <span>¿Estás seguro de eliminar los elementos seleccionados?</span>
+          </div>
+      </form>
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-outline-primary" (click)="modal.dismiss('Cancelar')">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="modal.close('Confirmar')">Confirmar</button>
+  </div>
 </ng-template>
