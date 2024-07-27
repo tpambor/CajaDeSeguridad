@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authorizationInterceptor: HttpInterceptorFn = (req, next) => {
-  const authToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.aUBy49Fu4AApWiWtiqzDnUmHJ2veWWVKmW9lh67nDTA';
+  const authToken = sessionStorage.getItem('token');
 
     // Verificar si la solicitud es para el proceso de inicio de sesión
     if (req.url.includes('/login')) {
