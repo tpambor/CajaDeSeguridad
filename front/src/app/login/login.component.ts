@@ -20,6 +20,7 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   showPassword: boolean = false;
+  showError: boolean = false;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -37,9 +38,8 @@ export class LoginComponent {
             sessionStorage.setItem('token', response.access_token);
             this.router.navigate([`/elements`]);
         },
-        error => {
-            console.error('Login failed', error);
-            // Manejar el error del login
+        _ => {
+          this.showError = true;
         }
     );
   }

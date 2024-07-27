@@ -3,13 +3,21 @@
         <img src="./images/logo.png" alt="Logo" width="350">
     </div>
 </div>
-<div class="row pb-5">
+<div class="row pb-4">
     <div class="col d-flex justify-content-center">
         <h1 class="text_color">Ingresa a tu cuenta</h1>
     </div>
 </div>
 
-<div class="row">
+<div class="row d-flex justify-content-center" *ngIf="showError">
+    <div class="col-6">
+        <div class="alert alert-danger">
+            El nombre de usuario o la contraseña no coinciden. Verifica tus datos e inténtalo nuevamente.
+        </div>
+    </div>
+</div>
+
+<div class="row pt-1">
     <div class="col d-flex justify-content-center">
         <form id="form-login" (ngSubmit)="onSubmit()">
             <div class="mb-3">
