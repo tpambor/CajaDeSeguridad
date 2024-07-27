@@ -3,8 +3,7 @@ import { FormsModule } from '@angular/forms'; // Import FormsModule
 import { ToastService } from "../toast/toast.service";
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient
-import { CommonModule } from '@angular/common';
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { environment } from '../environments/environment';
 
 
