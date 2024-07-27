@@ -102,11 +102,7 @@ export class ElementListComponent {
 
       if (this.elementos !== undefined) {
         elementos = this.mergeChecked(this.elementos, elementos);
-        console.log(elementos)
       }
-
-      console.log(this.elementos);
-      console.log(elementos);
 
       this.totalElementos = elementos.length;
 

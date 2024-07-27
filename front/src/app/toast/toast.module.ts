@@ -13,9 +13,6 @@ import { HttpClientModule } from '@angular/common/http';
   exports: [
     ToasterComponent
   ],
-  providers: [
-    ToastService
-  ],
   declarations: [
     ToasterComponent,
     ToastComponent

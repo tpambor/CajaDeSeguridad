@@ -12,12 +12,27 @@
           <input type="text" class="form-control margin-inline" name="nombreClave" required [(ngModel)]="nombreClave" placeholder="Ingresa el nombre de la clave"  [ngClass]="{'is-invalid': claveForm.submitted && !nombreClave}"/>
       </div>
       <div class="mb-3">
-      <label for="claveInput" class="form-label">Clave</label>
-      <button type="button" class="btn btn-secondary" (click)="generateRandomPassword()" id="generarClave">Generar Clave</button>
-      <input type="password" class="form-control margin-inline" name="claveInput" required [(ngModel)]="claveInput" placeholder="Ingresa la clave" [ngClass]="{'is-invalid': claveForm.submitted && !claveInput || clavesNoCoinciden }" />    </div>
+        <label for="claveInput" class="form-label">Clave</label>
+        <button type="button" class="btn btn-secondary" (click)="generateRandomPassword()" id="generarClave">Generar Clave</button>
+        <div class="input-group">
+            <input type="{{showPassword1 ? 'text' : 'password' }}" class="form-control form-floating input-password" name="claveInput" required [(ngModel)]="claveInput" placeholder="Ingresa la clave" [ngClass]="{'is-invalid': claveForm.submitted && !claveInput || clavesNoCoinciden }" />
+            <span class="input-group-text" [ngClass]="{'is-invalid': claveForm.submitted && !claveInput || clavesNoCoinciden }">
+                <i class="bi" [ngClass]="{'bi-eye': !showPassword1, 'bi-eye-slash': showPassword1}" id="toggle-password" style="cursor: pointer" (click)="togglePasswordVisibility1()" (keypress)="togglePasswordVisibility1()"></i>
+            </span>
+        </div>
+      </div>
     <div class="mb-3">
       <label for="confirmarclave" class="form-label">Confirmar Clave</label>
-      <input type="password" class="form-control margin-inline" name="confirmarclave" required [(ngModel)]="confirmarClave" placeholder="Confirma la clave" [ngClass]="{'is-invalid': claveForm.submitted && !confirmarClave  || clavesNoCoinciden}" />
+      <div class="input-group">
+        <input type="{{showPassword2 ? 'text' : 'password' }}" class="form-control form-floating input-password" name="confirmarclave" required [(ngModel)]="confirmarClave" placeholder="Confirma la clave" [ngClass]="{'is-invalid': claveForm.submitted && !confirmarClave || clavesNoCoinciden }" />
+        <span class="input-group-text" [ngClass]="{'is-invalid': claveForm.submitted && !confirmarClave || clavesNoCoinciden }">
+            <i class="bi" [ngClass]="{'bi-eye': !showPassword2, 'bi-eye-slash': showPassword2}" id="toggle-password" style="cursor: pointer" (click)="togglePasswordVisibility2()" (keypress)="togglePasswordVisibility2()"></i>
+        </span>
+        <div *ngIf="claveForm?.submitted && clavesNoCoinciden" class="invalid-feedback">
+          Las claves no coinciden.
+        </div>
+      </div>
+
     </div>
     <div class="mb-3">
       <label for="pista" class="form-label">Pista</label>

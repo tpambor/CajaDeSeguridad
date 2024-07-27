@@ -8,6 +8,11 @@
   border: 1px #24422A solid;
 }
 
+.toast.error {
+  --bs-toast-header-bg: #ff5050;
+  --bs-toast-header-color: #202020;
+}
+
 .toast .toast-header {
   border-bottom: 0;
   border-radius: calc(var(--bs-toast-border-radius) - var(--bs-toast-border-width));

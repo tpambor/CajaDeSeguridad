@@ -25,6 +25,8 @@ export class CrearClaveComponent {
   confirmarClave: string = '';
   pista: string = '';
   clavesNoCoinciden: boolean = false;
+  showPassword1: boolean = false;
+  showPassword2: boolean = false;
 
   back(){
     this.router.navigateByUrl("/elements");
@@ -78,10 +80,17 @@ export class CrearClaveComponent {
   }
   constructor(private toastService: ToastService, private router: Router, private http: HttpClient) {} // Inject HttpClient
 
+  togglePasswordVisibility1(): void {
+    this.showPassword1 = !this.showPassword1;
+  }
+
+  togglePasswordVisibility2(): void {
+    this.showPassword2 = !this.showPassword2;
+  }
+
   onSubmit() {
     if (this.claveInput !== this.confirmarClave) {
       this.clavesNoCoinciden = true;
-      this.showErrorToast();
       return;
     }
     this.clavesNoCoinciden = false;
@@ -89,7 +98,6 @@ export class CrearClaveComponent {
 
     if (this.pista.length<3) {
       this.pista = "";
-      this.showErrorToast();
       return;
     }
     const postData = {
@@ -101,16 +109,13 @@ export class CrearClaveComponent {
 
     this.http.post<{ response: any }>(environment.baseUrl +'api/caja/clave', postData).subscribe(
       (response: { response: any }) => {
-          this.toastService.showSuccessToast("Se ha creado la clave");
-          this.router.navigateByUrl("/elements");
-          },
-          (error: any) => {
-          this.toastService.showErrorToast("Error al crear la clave");
-          }
+        this.toastService.showSuccessToast("Se ha creado la clave");
+        this.router.navigateByUrl("/elements");
+      },
+      (error: any) => {
+        console.log('Error al crear la clave', error);
+        this.toastService.showErrorToast("Error al crear la clave");
+      }
     );
-  }
-
-  showErrorToast() {
-    this.toastService.showErrorToast('Las claves no coinciden');
   }
 }

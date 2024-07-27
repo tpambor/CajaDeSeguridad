@@ -89,3 +89,9 @@ form{
 .is-invalid {
   border: 1px solid red;
 }
+
+.input-group-text {
+  border-left-style: none;
+  background-color: var(--bs-body-bg);
+  z-index: 100;
+}
