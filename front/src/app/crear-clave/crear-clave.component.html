@@ -14,10 +14,10 @@
       <div class="mb-3">
       <label for="claveInput" class="form-label">Clave</label>
       <button type="button" class="btn btn-secondary" (click)="generateRandomPassword()" id="generarClave">Generar Clave</button>
-      <input type="password" class="form-control margin-inline" name="claveInput" required [(ngModel)]="claveInput" placeholder="Ingresa la clave" [ngClass]="{'is-invalid': claveForm.submitted && !claveInput || clavesNoCoinciden }" />    </div>
+      <input type="text" class="form-control margin-inline" name="claveInput" required [(ngModel)]="claveInput" placeholder="Ingresa la clave" [ngClass]="{'is-invalid': claveForm.submitted && !claveInput || clavesNoCoinciden }" />    </div>
     <div class="mb-3">
       <label for="confirmarclave" class="form-label">Confirmar Clave</label>
-      <input type="password" class="form-control margin-inline" name="confirmarclave" required [(ngModel)]="confirmarClave" placeholder="Confirma la clave" [ngClass]="{'is-invalid': claveForm.submitted && !confirmarClave  || clavesNoCoinciden}" />
+      <input type="text" class="form-control margin-inline" name="confirmarclave" required [(ngModel)]="confirmarClave" placeholder="Confirma la clave" [ngClass]="{'is-invalid': claveForm.submitted && !confirmarClave  || clavesNoCoinciden}" />
     </div>
     <div class="mb-3">
       <label for="pista" class="form-label">Pista</label>
