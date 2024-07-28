@@ -72,7 +72,7 @@ https://lb-cds-1270030646.us-east-1.elb.amazonaws.com/
 - front: Código fuente del frontend de la aplicación.
 - src: Código fuente principal de la aplicación backend.
 - terraform: Scripts de Terraform para la infraestructura.
-- tests: Pruebas unitarias y de integración para el proyecto.
+- tests: Pruebas unitarias del  proyecto.
 
 ## Estructura de Carpetas
 ### Backend  
