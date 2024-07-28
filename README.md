@@ -8,6 +8,7 @@ El propósito de este experimento es confirmar que la arquitectura TO-BE predefi
 3. [Tecnologías Utilizadas](#tecnologías-utilizadas)
 4. [Requisitos de Instalación](#requisitos-de-instalación)
 5. [Arquitectura](#arquitectura)
+6. [Estructura de Carpetas](#Estructura-de-Carpetas)
 
 
 ## Integrantes
@@ -64,3 +65,29 @@ Consulta la documentación completa de la API aqui:
 
 ## Aplicación en ejecución 
 https://lb-cds-1270030646.us-east-1.elb.amazonaws.com/ 
+
+## Estructura de Carpetas
+
+- auth: Microservicio de autenticación.
+- front: Código fuente del frontend de la aplicación.
+- src: Código fuente principal de la aplicación backend.
+- terraform: Scripts de Terraform para la infraestructura.
+- tests: Pruebas unitarias del  proyecto.
+
+## Estructura de Carpetas
+### Backend  
+1. git clone [Caja de seguridad](https://github.com/tpambor/CajaDeSeguridad.git)]
+2. cd  src 
+3. python -m venv env
+4. source env/bin/activate
+5. pip install -r requirements-web.txt
+6. flask run
+
+### Angular 
+1. git clone [Caja de seguridad](https://github.com/tpambor/CajaDeSeguridad.git)]
+2. cd front
+3. npm install
+4. ng serve
+
+
+ 
