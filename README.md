@@ -20,7 +20,7 @@ El propósito de este experimento es confirmar que la arquitectura TO-BE predefi
 | Fredy Antonio Alarcón Fonseca a | f.alarconf@uniandes.edu.co |
 
 ## Sustentación
-[Video Entrega]( )
+[Video Entrega](https://uniandes-my.sharepoint.com/:v:/g/personal/t_pambor_uniandes_edu_co/ERCmdn7zv8pFnkP5e7ctSUIBE4xOqZg-bZ_lvLjWxPgSnA)
 
 ## Descripción
 En la aplicación Caja de Seguridad, la gestión de elementos (secretos) es una parte crucial del sistema. Esta gestión incluye la capacidad de listar y crear nuevos elementos y claves, asegurando que los usuarios puedan almacenar y recuperar su información confidencial de manera segura y eficiente. Actualmente, el sistema presenta un alto acoplamiento entre las distintas entidades, lo que dificulta su escalabilidad y mantenimiento. Por esta razón, la prioridad de modernización se centra en desacoplar la lógica de negocio del front-end, exponiendo el backend a través de endpoints API y modernizando el front-end utilizando Angular.  
