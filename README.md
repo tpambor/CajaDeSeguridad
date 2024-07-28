@@ -55,8 +55,8 @@ En la aplicación Caja de Seguridad, la gestión de elementos (secretos) es una 
 ## API REST
 - /api/auth/login (POST): Inicia sesión en la aplicación web.
 - /api/caja/secretos (GET): Lista todos los elementos creados.
--/api/caja/claves (GET): Lista todas las claves favoritas creadas
--/api/caja/clave (POST): Crea la clave favorita.
+- /api/caja/claves (GET): Lista todas las claves favoritas creadas
+- /api/caja/clave (POST): Crea la clave favorita.
 
 Consulta la documentación completa de la API aqui: 
 - [Documentacion en Postman]([https://documenter.getpostman.com/view/29422849/2s9YRB4CyY](https://documenter.getpostman.com/view/26749673/2sA3kaBykT)) 
