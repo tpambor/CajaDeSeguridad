@@ -59,7 +59,7 @@ En la aplicación Caja de Seguridad, la gestión de elementos (secretos) es una 
 - /api/caja/clave (POST): Crea la clave favorita.
 
 Consulta la documentación completa de la API aqui: 
-- [Documentacion en Postman]([https://documenter.getpostman.com/view/29422849/2s9YRB4CyY](https://documenter.getpostman.com/view/26749673/2sA3kaBykT)) 
+- [Documentacion en Postman](https://documenter.getpostman.com/view/26749673/2sA3kaBykT)
 - [Postman Collection](https://github.com/tpambor/CajaDeSeguridad/wiki/Caja-de-seguridad.postman_collection)
 
 ## Aplicación en ejecución 
